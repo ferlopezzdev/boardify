@@ -21,7 +21,7 @@ const useAuth = () => {
     }
   };
 
-  return { isAuthenticated, setIsAuthenticated, error, setError, handleLogin };
+  return { isAuthenticated, error, setError, handleLogin };
 };
 
 export default useAuth;
