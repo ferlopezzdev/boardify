@@ -1,0 +1,34 @@
+# Ignorar los archivos generados por Node.js
+node_modules/
+
+# Ignorar el archivo de configuración de npm
+npm-debug.log
+
+# Ignorar los archivos de registro
+logs
+*.log
+
+# Ignorar archivos generados por el sistema de construcción de React
+/build
+
+# Ignorar archivos generados por la ejecución de pruebas
+/coverage
+
+# Ignorar las dependencias del cliente React (si se instalan en una subcarpeta)
+client/node_modules/
+
+# Ignorar archivos específicos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de entorno específicos del desarrollador (creados por dotenv, por ejemplo)
+.env
+
+# Ignorar archivos de dependencias de desarrollo para el cliente
+client/build/
+
+# Ignorar archivos de dependencias de desarrollo para el servidor
+server/node_modules/
+
+# Ignorar los archivos de configuración locales (pueden incluir secretos, credenciales, etc.)
+/config/local.js
