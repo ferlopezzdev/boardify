@@ -1,5 +1,5 @@
+const mysql = require('mysql2');
 require('dotenv').config();
-const mysql = require('mysql');
 
 const connection = mysql.createConnection({
     user: process.env.DB_USER,
@@ -7,3 +7,5 @@ const connection = mysql.createConnection({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE
 });
+
+module.exports = connection;

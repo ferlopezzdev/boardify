@@ -1,8 +1,12 @@
 const connection = require("../models/db");
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const jwtoken = process.env.TOKEN;
 
 // Login del usuario
 module.exports.login = (req, res) => {
+
   const { username, password } = req.body;
   const query = "SELECT * FROM users WHERE username = ? AND password = ?";
 
@@ -18,7 +22,7 @@ module.exports.login = (req, res) => {
       if (result.length > 0) {
         
         const user = result[0];
-        const token = jwt.sign({ id: user.id, username: user.username }, "GatoConBigotes", {
+        const token = jwt.sign({ id: user.id, username: user.username }, jwtoken, {
           expiresIn: '365d'
         });
         res.send({token});
