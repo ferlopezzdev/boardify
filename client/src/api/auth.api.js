@@ -1,4 +1,5 @@
-export const authLogin = async (username, password) => {
+// Consumir API de login desde el servidor
+export const apiAuthLogin = async (username, password) => {
     const response = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
       headers: {

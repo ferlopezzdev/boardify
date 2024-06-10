@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { authLogin } from '../api';
+import { apiAuthLogin } from '../api';
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
 
-  const loginService = async (username, password) => {
+  const handleLogin  = async (username, password) => {
     try {
-      const result = await authLogin(username, password);
+      // Obtener resultados de la Api de login
+      const result = await apiAuthLogin(username, password);
+      // Si se consigue el token exitosamente, autenticar usuario
       if (result.token) {
         localStorage.setItem("token", result.token);
         setIsAuthenticated(true);
@@ -21,7 +23,8 @@ const useAuth = () => {
     }
   };
 
-  return { isAuthenticated, error, setError, loginService };
+  // Exportar posibles errores, autenticación y la función de logueo
+  return { isAuthenticated, error, setError, handleLogin  };
 };
 
 export default useAuth;
