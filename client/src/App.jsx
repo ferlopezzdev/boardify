@@ -1,7 +1,8 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
 
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
 
   return (
     <Routes>
+      <Route path='/register' element={<Register />} />
       <Route path='/login' element={<Login />} />
       <Route path="/home" element={ token ? <Home /> : <Navigate to="/login" /> } />
     </Routes>

@@ -8,7 +8,7 @@ const routes = require('./api/auth.api')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Autorizar peticiones
+// Autorizar peticiones solo desde la URL indicada
 app.use(cors({
     origin: ["http://localhost:5173"],
     methods: ["GET", "POST"],

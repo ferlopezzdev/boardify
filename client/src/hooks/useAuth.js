@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { login } from '../api';
+import { authLogin } from '../api';
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async (username, password) => {
+  const loginService = async (username, password) => {
     try {
-      const result = await login(username, password);
+      const result = await authLogin(username, password);
       if (result.token) {
         localStorage.setItem("token", result.token);
         setIsAuthenticated(true);
@@ -21,7 +21,7 @@ const useAuth = () => {
     }
   };
 
-  return { isAuthenticated, error, setError, handleLogin };
+  return { isAuthenticated, error, setError, loginService };
 };
 
 export default useAuth;
