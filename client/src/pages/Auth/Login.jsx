@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 
 const Login = () => {
+
+  const navigate = useNavigate()
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,7 +15,12 @@ const Login = () => {
     e.preventDefault();
 
     if (username && password) {
-      await handleLogin(username, password);
+      const isLogin = await handleLogin(username, password);
+      
+      if ( isLogin ) {
+        navigate("/home");
+      }
+
     } else {
       setError("Completa todos los campos.")
     }

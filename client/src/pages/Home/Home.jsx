@@ -1,10 +1,11 @@
+import React from "react";
 
 const Home = () => {
-    return(
-        <>
-            <div>Estás logueado</div>
-        </>
-    )
-}
+
+  return (
+    <h1>Iniciado xd</h1>
+  );
+
+}  
 
 export default Home;

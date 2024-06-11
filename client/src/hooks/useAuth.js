@@ -17,12 +17,17 @@ const useAuth = () => {
         localStorage.setItem("token", result.token);
         setIsAuthenticated(true);
         setError("");
+        // Autorizar inicio de sesión
+        return true;
       } else {
         setError("Credenciales inválidas.");
+        // Rechazar inicio de sesión
+        return false;
       }
     } catch (err) {
       // Establece un mensaje de error genérico
       setError("Ocurrió un error al intentar iniciar sesión.");
+      return false;
     }
   };
 

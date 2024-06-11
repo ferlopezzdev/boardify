@@ -1,19 +1,26 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home/Home';
+import { isAuthenticated } from './services/auth.services';
+
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import Home from './pages/Home/Home';
 
+const ProtectedRoute = ({ element, ...rest }) => {
+  return isAuthenticated() ? (
+    element
+  ) : (
+    <Navigate to="/login" replace />
+  );
+};
 
 const App = () => {
-
-  const token = localStorage.getItem('token');
-
   return (
     <Routes>
       <Route path='/register' element={<Register />} />
       <Route path='/login' element={<Login />} />
-      <Route path="/home" element={ token ? <Home /> : <Navigate to="/login" /> } />
+      {/* Rutas protegidas */}
+      <Route path='/home' element={<ProtectedRoute element={<Home />} />} />
     </Routes>
   );
 };
