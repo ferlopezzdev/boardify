@@ -1,5 +1,4 @@
-// Función para validar token
-
+// Acceso del usuario
 export const login = async (username, password) => {
   const response = await fetch("http://localhost:3000/auth/login", {
     method: "POST",
@@ -17,6 +16,7 @@ export const login = async (username, password) => {
   return result;
 };
 
+// Registro de usuario
 export const register = async (name, lastname, email, username, password) => {
   const response = await fetch("http://localhost:3000/auth/register", {
     method: "POST",
