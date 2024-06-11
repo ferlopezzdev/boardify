@@ -3,36 +3,22 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-  const [userData, setUserData] = useState({
-    username: "",
-    password: ""
-  });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const { error, setError, handleLogin } = useAuth();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { username, password } = userData;
-
     if (username && password) {
-      const loginSuccess = await handleLogin(username, password);
-      if (loginSuccess) {
-        navigate("/dashboard");
-      }
+      await handleLogin(username, password);
     } else {
-      setError("Completa todos los campos.");
+      setError("Completa todos los campos.")
     }
-  };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-    setError("");
   };
 
   return (
@@ -43,19 +29,23 @@ const Login = () => {
       >
         <label className="mb-1 text-gray-700">Username:</label>
         <input
-          name="username"
           placeholder="Usuario"
-          value={userData.username}
-          onChange={handleChange}
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value)
+            setError('');
+          }}
           className="mb-4 p-2 border rounded"
           type="text"
         />
         <label className="mb-1 text-gray-700">Password:</label>
         <input
-          name="password"
           placeholder="Contraseña"
-          value={userData.password}
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value)
+            setError('');
+          }}
           className="mb-4 p-2 border rounded"
           type="password"
         />
