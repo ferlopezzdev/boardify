@@ -41,8 +41,10 @@ const useAuth = () => {
         localStorage.setItem("token", result.token);
         setIsAuthenticated(true);
         setError("");
+        return true;
       } else {
         setError(result.message);
+        return false;
       }
     } catch (err) {
       // Establece un mensaje de error genérico

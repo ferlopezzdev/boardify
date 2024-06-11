@@ -31,7 +31,7 @@ const Login = () => {
         password
       );
       if (loginSuccess) {
-        navigate("/dashboard");
+        navigate("/home");
       }
     } else {
       setError("Completa todos los campos.");

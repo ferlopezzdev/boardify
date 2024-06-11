@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { decodedToken } from "@services/auth.services";
+import { decodedToken } from "@services/token.services";
 import LogoutButton from "@components/Auth/LogoutButton";
 
 const Home = () => {
