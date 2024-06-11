@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
@@ -23,7 +23,13 @@ const Login = () => {
 
     // Validar que los datos existan y sean correctos
     if (username && password) {
-      const loginSuccess = await handleRegister(name, lastname, email, username, password);
+      const loginSuccess = await handleRegister(
+        name,
+        lastname,
+        email,
+        username,
+        password
+      );
       if (loginSuccess) {
         navigate("/dashboard");
       }
@@ -43,66 +49,91 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col bg-white p-6 rounded shadow-md max-w-xs w-full"
+        className="flex flex-col bg-white p-6 rounded-md shadow-md max-w-lg w-full border-2 border-black"
+        style={{ background: "linear-gradient(to bottom, #fff, #f1f1f1)" }}
       >
-        <label className="mb-1 text-gray-700">Name:</label>
-        <input
-          name="name"
-          placeholder="Nombre"
-          value={userData.name}
-          onChange={handleChange}
-          className="mb-4 p-2 border rounded"
-          type="text"
-        />
-        <label className="mb-1 text-gray-700">Last name:</label>
-        <input
-          name="lastname"
-          placeholder="Apellido"
-          value={userData.lastname}
-          onChange={handleChange}
-          className="mb-4 p-2 border rounded"
-          type="text"
-        />
-        <label className="mb-1 text-gray-700">Email:</label>
+        <h1 className="mb-6 text-gray-700 text-2xl font-bold text-center">
+          Regístrate
+        </h1>
+        <div className="flex">
+          <div className="flex flex-col w-1/2 mr-2">
+            <label className="mb-1 font-bold text-gray-700">Nombre</label>
+            <input
+              name="name"
+              placeholder="Nombre"
+              value={userData.name}
+              onChange={handleChange}
+              className="mb-4 p-2 text-[14px] border rounded border-black focus:outline-none focus:border-indigo-600"
+              type="text"
+              style={{ background: "rgba(255, 255, 255, 0.7)" }}
+            />
+          </div>
+          <div className="flex flex-col w-1/2 ml-2">
+            <label className="mb-1 font-bold text-gray-700">Apellido</label>
+            <input
+              name="lastname"
+              placeholder="Apellido"
+              value={userData.lastname}
+              onChange={handleChange}
+              className="mb-4 p-2 text-[14px] border rounded border-black focus:outline-none focus:border-indigo-600"
+              type="text"
+              style={{ background: "rgba(255, 255, 255, 0.7)" }}
+            />
+          </div>
+        </div>
+        <label className="mb-1 font-bold text-gray-700">Correo eléctronico</label>
         <input
           name="email"
           placeholder="Correo eléctronico"
           value={userData.email}
           onChange={handleChange}
-          className="mb-4 p-2 border rounded"
+          className="mb-4 p-2 text-[14px] border rounded border-black focus:outline-none focus:border-indigo-600"
           type="email"
+          style={{ background: "rgba(255, 255, 255, 0.7)" }}
         />
-        <label className="mb-1 text-gray-700">Username:</label>
+        <label className="mb-1 font-bold text-gray-700">Usuario</label>
         <input
           name="username"
           placeholder="Usuario"
           value={userData.username}
           onChange={handleChange}
-          className="mb-4 p-2 border rounded"
+          className="mb-4 p-2 text-[14px] border rounded border-black focus:outline-none focus:border-indigo-600"
           type="text"
+          style={{ background: "rgba(255, 255, 255, 0.7)" }}
         />
-        <label className="mb-1 text-gray-700">Password:</label>
+        <label className="mb-1 font-bold text-gray-700">Contraseña</label>
         <input
           name="password"
           placeholder="Contraseña"
           value={userData.password}
           onChange={handleChange}
-          className="mb-4 p-2 border rounded"
+          className="mb-4 p-2 text-[14px] border rounded border-black focus:outline-none focus:border-indigo-600"
           type="password"
+          style={{ background: "rgba(255, 255, 255, 0.7)" }}
         />
         <button
           type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="bg-indigo-600 text-white p-2 rounded hover:bg-indigo-800 font-bold transition-colors"
         >
           Register
         </button>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {error && <p className="text-red-500 text-center mt-2">{error}</p>}
       </form>
+      <p className="p-1">
+        ¿Ya tienes una cuenta?,{" "}
+        <Link
+          to="/login"
+          className=" text-indigo-600 font-bold uppercase border-b-2 border-indigo-600"
+        >
+          Ingresar
+        </Link>
+      </p>
     </div>
   );
+  
 };
 
 export default Login;

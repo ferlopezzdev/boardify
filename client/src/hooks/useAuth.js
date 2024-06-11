@@ -10,23 +10,17 @@ const useAuth = () => {
   // Función para manejar el inicio de sesión
   const handleLogin = async (username, password) => {
     try {
-      // Realiza la solicitud de inicio de sesión
       const result = await login(username, password);
       // Verifica si se recibió un token en la respuesta
       if (result.token) {
         // Almacena el token en el almacenamiento local del navegador
         localStorage.setItem("token", result.token);
-        // Actualiza el estado de autenticación a verdadero
         setIsAuthenticated(true);
-        // Limpia cualquier error previo
         setError("");
       } else {
-        // Establece un mensaje de error si las credenciales son inválidas
         setError("Credenciales inválidas.");
       }
     } catch (err) {
-      // Registra cualquier error en la consola
-      console.error("Login error:", err);
       // Establece un mensaje de error genérico
       setError("Ocurrió un error al intentar iniciar sesión.");
     }
@@ -35,23 +29,17 @@ const useAuth = () => {
   // Función para manejar el registro de usuarios
   const handleRegister = async (name, lastname, email, username, password) => {
     try {
-      // Realiza la solicitud de registro
       const result = await register(name, lastname, email, username, password);
       // Verifica si se recibió un token en la respuesta
       if (result.token) {
         // Almacena el token en el almacenamiento local del navegador
         localStorage.setItem("token", result.token);
-        // Actualiza el estado de autenticación a verdadero
         setIsAuthenticated(true);
-        // Limpia cualquier error previo
         setError("");
       } else {
-        // Establece un mensaje de error basado en la respuesta recibida
         setError(result.message);
       }
     } catch (err) {
-      // Registra cualquier error en la consola
-      console.error("Register error:", err);
       // Establece un mensaje de error genérico
       setError("Ocurrió un error al intentar registrar.");
     }
