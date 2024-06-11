@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { isAuthenticated } from './services/auth.services';
+import { isAuthenticated } from '@services/auth.services';
 
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
-import Home from './pages/Home/Home';
+import Login from '@pages/Auth/Login';
+import Register from '@pages/Auth/Register';
+import Home from '@pages/Home/Home';
 
 const ProtectedRoute = ({ element, ...rest }) => {
   return isAuthenticated() ? (

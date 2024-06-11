@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login, register } from "../api"; // Importa las funciones de login y register desde un módulo api
+import { login, register } from "@api"; // Importa las funciones de login y register desde un módulo api
 
 // Custom hook para manejar la autenticación
 const useAuth = () => {
