@@ -1,26 +1,24 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { isAuthenticated } from '@services/token.services';
+import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import PageLogin from '@pages/Auth/PageLogin';
-import PageRegister from '@pages/Auth/PageRegister';
-import Home from '@pages/Home/Home';
-
-const ProtectedRoute = ({ element, ...rest }) => {
-  return isAuthenticated() ? (
-    element
-  ) : (
-    <Navigate to="/login" replace />
-  );
-};
+import ProtectedRoute from "@components/utils/ProtectedRoute";
+import Signin from "@pages/Auth/PageLogin";
+import Signup from "@pages/Auth/PageRegister";
+import Home from "@pages/Home/Home";
+import useToken from '@hooks/useToken';
 
 const App = () => {
+
+  const isAutenticated = useToken();
+
   return (
     <Routes>
-      <Route path='/login' element={<PageLogin />} />
-      <Route path='/register' element={<PageRegister />} />
-      {/* Rutas protegidas */}
-      <Route path='/home' element={<ProtectedRoute element={<Home />} />} />
+      <Route path="/" element={<Home />} />
+      <Route element={<ProtectedRoute canActivate={isAutenticated} />}>
+        <Route path="/home" element={<Home />} />
+      </Route>
+      <Route path="/auth/signin" element={<Signin />} />
+      <Route path="/auth/signup" element={<Signup />} />
     </Routes>
   );
 };

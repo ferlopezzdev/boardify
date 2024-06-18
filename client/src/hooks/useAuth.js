@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login, register } from "@api"; // Importa las funciones de login y register desde un módulo api
+import { signin, signup } from "@services"; // Importa las funciones de login y register desde un módulo api
 
 // Custom hook para manejar la autenticación
 const useAuth = () => {
@@ -10,7 +10,7 @@ const useAuth = () => {
   // Función para manejar el inicio de sesión
   const handleLogin = async (username, password) => {
     try {
-      const result = await login(username, password);
+      const result = await signin(username, password);
       // Verifica si se recibió un token en la respuesta
       if (result.token) {
         // Almacena el token en el almacenamiento local del navegador
@@ -34,7 +34,7 @@ const useAuth = () => {
   // Función para manejar el registro de usuarios
   const handleRegister = async (name, lastname, email, username, password) => {
     try {
-      const result = await register(name, lastname, email, username, password);
+      const result = await signup(name, lastname, email, username, password);
       // Verifica si se recibió un token en la respuesta
       if (result.token) {
         // Almacena el token en el almacenamiento local del navegador

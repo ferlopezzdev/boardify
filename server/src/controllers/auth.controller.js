@@ -1,11 +1,12 @@
-const connection = require("../models/db");
+const connection = require("../config/db.config");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const { generateUniqueId } = require('../utils/common.utils');
+const config = require('../config/data.config');
 
-const jwtoken = process.env.TOKEN;
+const jwtoken = config.token;
 
-module.exports.login = (req, res) => {
+module.exports.signin = (req, res) => {
   const { username, password } = req.body;
   const query = "SELECT * FROM users WHERE username = ?";
 
@@ -25,7 +26,7 @@ module.exports.login = (req, res) => {
         if (isPasswordValid) {
           // Generar token de ingreso
           const token = jwt.sign(
-            { id: user.id, username: user.username },
+            { id: user.unique_id, username: user.username },
             jwtoken,
             {
               expiresIn: "365d",
@@ -48,7 +49,7 @@ module.exports.login = (req, res) => {
 };
 
 // Registro de usuario
-module.exports.register = async (req, res) => {
+module.exports.signup = async (req, res) => {
   const { name, lastname, email, username, password } = req.body;
 
   // Verificar que todos los campos estén completos
@@ -68,25 +69,29 @@ module.exports.register = async (req, res) => {
         return res.send({ message: "El usuario o correo ya existe." });
       }
 
+      // Generar id único
+      const unique_id = generateUniqueId(20);
+
       // Hash de la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
 
+      // Estado del usuario
+      const status = 'active';
+
       // Insertar el nuevo usuario en la base de datos
-      const insertQuery = "INSERT INTO users (name, lastname, email, username, password, creation) VALUES (?, ?, ?, ?, ?, NOW())";
-      connection.query(insertQuery, [name, lastname, email, username, hashedPassword], (err, result) => {
+      const insertQuery = "INSERT INTO users (unique_id, name, lastname, username, email, password, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      connection.query(insertQuery, [unique_id, name, lastname, username, email, hashedPassword, status], (err, result) => {
         if (err) {
           return res.send(err);
         }
 
-        // Generar token de ingreso
         const token = jwt.sign(
-          { id: result.insertId, username: username },
+          { id: unique_id, username: username },
           jwtoken,
           {
             expiresIn: "365d",
           }
         );
-
         res.send({ token });
       });
     });

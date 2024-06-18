@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { decodedToken } from "@services/token.services";
-import LogoutButton from "@components/Auth/LogoutButton";
+import { decodedToken } from "@utils/token.utils";
+import LogoutButton from "@components/auth/LogoutButton";
 
 const Home = () => {
   const [username, setUsername] = useState("");

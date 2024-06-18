@@ -1,6 +1,8 @@
 // Acceso del usuario
-export const login = async (username, password) => {
-  const response = await fetch("http://localhost:3000/auth/login", {
+export const signin = async (username, password) => {
+  const url = 'http://localhost:3000/auth/signin';
+
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,8 +19,10 @@ export const login = async (username, password) => {
 };
 
 // Registro de usuario
-export const register = async (name, lastname, email, username, password) => {
-  const response = await fetch("http://localhost:3000/auth/register", {
+export const signup = async (name, lastname, email, username, password) => {
+  const url = 'http://localhost:3000/auth/signup';
+
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

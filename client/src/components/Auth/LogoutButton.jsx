@@ -8,7 +8,7 @@ const LogoutButton = () => {
     // Eliminar el token de autenticación del almacenamiento local
     localStorage.removeItem("token");
     // Redirigir al usuario a la página de inicio de sesión
-    navigate("/login");
+    navigate("/auth/signin");
   };
 
   return (
