@@ -20,7 +20,7 @@ const useAuth = () => {
         // Autorizar inicio de sesión
         return true;
       } else {
-        setError("Credenciales inválidas.");
+        setError(result.message);
         // Rechazar inicio de sesión
         return false;
       }

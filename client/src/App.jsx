@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import ProtectedRoute from "@components/utils/ProtectedRoute";
+import ProtectedRoute from "@components/Utils/ProtectedRoute";
 import Signin from "@pages/Auth/PageLogin";
 import Signup from "@pages/Auth/PageRegister";
 import Home from "@pages/Home/Home";
@@ -13,9 +13,9 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
       <Route element={<ProtectedRoute canActivate={isAutenticated} />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
       </Route>
       <Route path="/auth/signin" element={<Signin />} />
       <Route path="/auth/signup" element={<Signup />} />

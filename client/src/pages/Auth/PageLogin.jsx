@@ -72,7 +72,7 @@ const Login = () => {
       <p className="p-1">
         ¿Aún no tienes una cuenta?,{" "}
         <Link
-          to="/register"
+          to="/auth/signup"
           className=" text-indigo-600 font-bold uppercase border-b-2 border-indigo-600"
         >
           Registrate

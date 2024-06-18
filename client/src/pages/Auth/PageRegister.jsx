@@ -125,7 +125,7 @@ const Login = () => {
       <p className="p-1">
         ¿Ya tienes una cuenta?,{" "}
         <Link
-          to="/login"
+          to="/auth/signin"
           className=" text-indigo-600 font-bold uppercase border-b-2 border-indigo-600"
         >
           Ingresar
