@@ -28,9 +28,6 @@ const Header = () => {
   return (
     <header className="w-full border-b p-6 bg-gray-100 flex flex-row justify-between">
       <div className="flex flex-row">
-        <div className="block cursor-pointer p-2 rounded-full hover:bg-gray-200 transition-all duration-150">
-          <FaBars color="gray" size={24} onClick={() => console.log("TEST")} />
-        </div>
 
         <div
           className="
