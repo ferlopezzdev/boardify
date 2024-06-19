@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { decodedToken } from "@utils/token.utils";
-import LogoutButton from "@components/auth/LogoutButton";
+import Header from "../../components/Templates/Header";
 
 const Home = () => {
   const [username, setUsername] = useState("");
@@ -18,12 +18,14 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="m-6">
-      <h1>Bienvenido</h1>
-      <p>user: {username}</p>
-      <p>Id: {id} </p>
-      <LogoutButton />
-    </div>
+    <>
+      <Header />
+      <div className="m-6">
+        <h1>Bienvenido</h1>
+        <p>user: {username}</p>
+        <p>Id: {id} </p>
+      </div>
+    </>
   );
 };
 

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Modal from "./ModalLogout"; // Asume que ya tienes un componente de Modal
 
 const LogoutButton = () => {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
     // Eliminar el token de autenticación del almacenamiento local
@@ -11,13 +13,41 @@ const LogoutButton = () => {
     navigate("/auth/signin");
   };
 
+  const confirmLogout = () => {
+    setShowModal(true);
+  };
+
+  const cancelLogout = () => {
+    setShowModal(false);
+  };
+
+  const logoutAndCloseModal = () => {
+    handleLogout();
+    setShowModal(false);
+  };
+
   return (
-    <button
-      className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow"
-      onClick={handleLogout}
-    >
-      Cerrar sesión
-    </button>
+    <>
+      <button
+        className="text-red-500 font-poppins text-sm"
+        onClick={confirmLogout}
+      >
+        Cerrar sesión
+      </button>
+      {showModal && (
+        <Modal
+          title="Cerrar sesión"
+          onClose={cancelLogout}
+          onSubmit={logoutAndCloseModal}
+        >
+          <p>¿Está seguro de que desea cerrar la sesión?</p>
+          <div className="flex justify-end mt-4">
+            <button onClick={logoutAndCloseModal}></button>
+            <button onClick={cancelLogout}></button>
+          </div>
+        </Modal>
+      )}
+    </>
   );
 };
 

@@ -56,4 +56,4 @@ const useAuth = () => {
   return { isAuthenticated, error, setError, handleLogin, handleRegister };
 };
 
-export default useAuth; // Exporta el hook useAuth para ser utilizado en otros componentes
+export default useAuth;

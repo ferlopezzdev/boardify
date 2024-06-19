@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import ProtectedRoute from "@components/Utils/ProtectedRoute";
@@ -13,10 +13,12 @@ const App = () => {
 
   return (
     <Routes>
+      {/* Rutas protegidas */}
       <Route element={<ProtectedRoute canActivate={isAutenticated} />}>
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<Home />} />
       </Route>
+      {/* Rutas de autorización */}
       <Route path="/auth/signin" element={<Signin />} />
       <Route path="/auth/signup" element={<Signup />} />
     </Routes>
