@@ -15,7 +15,7 @@ const App = () => {
     <Routes>
       {/* Rutas protegidas */}
       <Route element={<ProtectedRoute canActivate={isAutenticated} />}>
-        <Route path="/home" element={<Home />} />
+        <Route path="/home/:id" element={<Home />} />
         <Route path="/" element={<Home />} />
       </Route>
       {/* Rutas de autorización */}

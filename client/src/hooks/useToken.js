@@ -13,7 +13,7 @@ const useToken = () => {
   useEffect(() => {
     // Decodificar el token y validar que sea uno válido
     const payloadDecoded = decodedToken();
-    if (payloadDecoded && payloadDecoded.id) {
+    if (payloadDecoded && payloadDecoded.username) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);

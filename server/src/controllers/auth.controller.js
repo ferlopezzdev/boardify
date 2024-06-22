@@ -26,7 +26,7 @@ module.exports.signin = (req, res) => {
         if (isPasswordValid) {
           // Generar token de ingreso
           const token = jwt.sign(
-            { id: user.unique_id, username: user.username },
+            { id: user.user_id, username: user.username },
             jwtoken,
             {
               expiresIn: "365d",
@@ -86,7 +86,7 @@ module.exports.signup = async (req, res) => {
         }
 
         const token = jwt.sign(
-          { id: unique_id, username: username },
+          { id: result.insertId, username: username },
           jwtoken,
           {
             expiresIn: "365d",

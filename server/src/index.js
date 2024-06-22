@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const authRoutes = require('./routes/auth.routes');
+const workspacesRoutes = require('./routes/workspaces.routes');
 const config = require('./config/data.config');
 
 // Configuración para recibir peticiones
@@ -16,6 +17,7 @@ app.use(cors({
 
 // Rutas de las apis
 app.use('/', authRoutes);
+app.use('/', workspacesRoutes);
 
 const PORT = config.port;
 

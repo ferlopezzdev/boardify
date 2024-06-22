@@ -1,30 +1,37 @@
 import React, { useState } from "react";
 import useAuth from "@hooks/useAuth";
-import { Link, useNavigate  } from "react-router-dom";
+import { decodedToken } from "../../utils/token.utils";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 
 const Login = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { error, setError, handleLogin } = useAuth();
 
+  const { setUserId } = useUser();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (username && password) {
       const isLogin = await handleLogin(username, password);
-      
-      if ( isLogin ) {
-        navigate("/home");
+
+      if (isLogin) {
+        // Obtener el payload decodificado del token
+        const payloadDecoded = decodedToken();
+        setUserId(payloadDecoded.id);
+
+        if (payloadDecoded && payloadDecoded.id) {
+          navigate(`/home/${payloadDecoded.id}`);
+        }
       }
-
     } else {
-      setError("Completa todos los campos.")
+      setError("Completa todos los campos.");
     }
-
   };
 
   return (
@@ -32,7 +39,7 @@ const Login = () => {
       <form
         onSubmit={handleSubmit}
         className="flex flex-col bg-white p-6 rounded-md shadow-md max-w-xs w-full border-2 border-black"
-        style={{ background: 'linear-gradient(to bottom, #fff, #f1f1f1)' }}
+        style={{ background: "linear-gradient(to bottom, #fff, #f1f1f1)" }}
       >
         <h1 className="mb-6 text-gray-700 text-2xl font-bold text-center">
           Iniciar sesión
@@ -42,24 +49,26 @@ const Login = () => {
           placeholder="Usuario"
           value={username}
           onChange={(e) => {
-            setUsername(e.target.value)
-            setError('');
+            setUsername(e.target.value);
+            setError("");
           }}
           className="mb-4 p-2 text-[14px] border rounded border-black focus:outline-none focus:border-indigo-600"
           type="text"
-          style={{ background: 'rgba(255, 255, 255, 0.7)' }}
+          style={{ background: "rgba(255, 255, 255, 0.7)" }}
         />
-        <label className="mb-1 font-bold text-gray-700 text-md">Contraseña</label>
+        <label className="mb-1 font-bold text-gray-700 text-md">
+          Contraseña
+        </label>
         <input
           placeholder="Contraseña"
           value={password}
           onChange={(e) => {
-            setPassword(e.target.value)
-            setError('');
+            setPassword(e.target.value);
+            setError("");
           }}
           className="mb-4 p-2 text-[14px] border rounded border-black focus:outline-none focus:border-indigo-600"
           type="password"
-          style={{ background: 'rgba(255, 255, 255, 0.7)' }}
+          style={{ background: "rgba(255, 255, 255, 0.7)" }}
         />
         <button
           type="submit"
@@ -80,7 +89,6 @@ const Login = () => {
       </p>
     </div>
   );
-  
-}  
+};
 
 export default Login;

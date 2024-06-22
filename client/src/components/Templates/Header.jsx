@@ -19,7 +19,7 @@ const Header = () => {
     if (payloadDecoded && payloadDecoded.username) {
       // Establecer parametros al estado local
       setUserData({
-        id: "00" + payloadDecoded.id.slice(0, 6),
+        id: payloadDecoded.id,
         username: payloadDecoded.username,
       });
     }
