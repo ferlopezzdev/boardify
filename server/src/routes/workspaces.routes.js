@@ -1,7 +1,10 @@
 const express = require('express');
-const authRoutes = express.Router();
-const { getAllWorkspaces } = require('../controllers/workspace.controller');
+const workspaceRoutes = express.Router();
+const { getAllWorkspaces, addWorkspace, deleteWorkspace, updateWorkspace } = require('../controllers/workspace.controller');
 
-authRoutes.get('/workspace/:id', getAllWorkspaces);
+workspaceRoutes.get('/workspace/:id', getAllWorkspaces);
+workspaceRoutes.post('/workspace/create', addWorkspace);
+workspaceRoutes.delete('/workspace/:id', deleteWorkspace);
+workspaceRoutes.patch('/workspace/:id', updateWorkspace); // Ruta para actualizar un grupo de trabajo
 
-module.exports = authRoutes;
+module.exports = workspaceRoutes;

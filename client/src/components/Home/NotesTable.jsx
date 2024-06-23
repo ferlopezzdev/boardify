@@ -1,36 +1,82 @@
-import React, { useEffect, useState } from "react";
-import { getAllWorkspace } from "../../services/workspaces.services"; // Asegúrate de importar correctamente la función getAllWorkspace
+import React, { useState, useEffect } from "react";
+import {
+  addWorkspace,
+  getAllWorkspace,
+  deleteWorkspace,
+  updateWorkspace,
+} from "@services/workspaces.services";
 import { useUser } from "../../context/UserContext";
+import CreateGroupModal from "./Modals/CreateGroupModal";
 
 const NotesTable = () => {
   const [notes, setNotes] = useState([]);
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const { userId } = useUser();
 
-  console.log(userId);
-
-  useEffect(() => {
-
-    const fetchNotes = async () => {
-      try {
-        const result = await getAllWorkspace(userId);
+  const fetchNotes = async () => {
+    try {
+      const result = await getAllWorkspace(userId);
+      if (Array.isArray(result)) {
         setNotes(result);
-      } catch (error) {
-        console.error("Error al obtener las notas:", error);
+      } else {
+        console.error("Error: No obtuvimos datos");
       }
-    };
-
-    fetchNotes();
-  }, [userId]);
-
-  const handleDelete = (id) => {
-    // Implementa la lógica para eliminar la nota con el ID proporcionado
-    console.log(`Eliminar nota con ID: ${id}`);
+    } catch (error) {
+      console.error("Error al obtener las notas:", error);
+    }
   };
 
-  const handleUpdate = (id) => {
-    // Implementa la lógica para actualizar la nota con el ID proporcionado
-    console.log(`Actualizar nota con ID: ${id}`);
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const handleCreate = () => {
+    setTitle("");
+    setDescription("");
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (group_id) => {
+    try {
+      const confirmDelete = window.confirm(
+        "¿Estás seguro de que quieres eliminar este grupo de trabajo?"
+      );
+      if (confirmDelete) {
+        await deleteWorkspace(group_id);
+        fetchNotes();
+      }
+    } catch (error) {
+      console.error("Error al eliminar el grupo de trabajo:", error);
+    }
+  };
+
+  const handleUpdate = (group_id) => {
+    const selected = notes.find((note) => note.group_id === group_id);
+    setSelectedNote(selected);
+    setTitle(title);
+    setDescription(description);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async () => {
+    try {
+      if (selectedNote) {
+        await updateWorkspace(selectedNote.group_id, title, description);
+      } else {
+        await addWorkspace(title, description, userId);
+      }
+      setTitle("");
+      setDescription("");
+      setSelectedNote(null);
+      setIsModalOpen(false);
+      fetchNotes();
+    } catch (error) {
+      console.error("Error al guardar el grupo:", error);
+    }
   };
 
   return (
@@ -59,18 +105,57 @@ const NotesTable = () => {
         <tbody className="bg-white divide-y p-0 m-0 divide-gray-200">
           {notes.map((note) => (
             <tr key={note.group_id}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{note.title}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{note.description}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{note.created}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{note.updated}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                <button className="mr-2 bg-red-500 text-white px-2 py-1 rounded" onClick={() => handleDelete(note.id)}>Eliminar</button>
-                <button className="bg-blue-500 text-white px-2 py-1 rounded" onClick={() => handleUpdate(note.id)}>Actualizar</button>
+                {note.title}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {note.description}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {note.created_at}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {note.updated_at}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <button
+                  className="mr-2 bg-red-500 text-white px-2 py-1 rounded"
+                  onClick={() => handleDelete(note.group_id)}
+                >
+                  Eliminar
+                </button>
+                <button
+                  className="bg-blue-500 text-white px-2 py-1 rounded"
+                  onClick={() => handleUpdate(note.group_id)}
+                >
+                  Actualizar
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <button
+        className="bg-primary text-white text-sm px-2 py-1 m-6 rounded-sm fixed bottom-4 right-4"
+        onClick={handleCreate}
+      >
+        + Agregar grupo
+      </button>
+      <CreateGroupModal
+        isOpen={isModalOpen}
+        onRequestClose={() => {
+          setIsModalOpen(false);
+          setSelectedNote(null);
+        }}
+        modalTitle={selectedNote ? `Actualizar grupo: ${selectedNote.title}` : 'Agregar nuevo grupo'}
+        onSave={handleSave}
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        placeholderTitle={selectedNote ? selectedNote.title : 'Titulo del grupo'}
+        placeholderDescription={selectedNote ? selectedNote.description : 'Describa brevemente...'}
+      />
     </div>
   );
 };
