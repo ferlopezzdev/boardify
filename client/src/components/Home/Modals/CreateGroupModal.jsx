@@ -22,6 +22,7 @@ const CreateGroupModal = ({ isOpen, onRequestClose, onSave, title, setTitle, des
           placeholder={placeholderTitle}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          maxLength={30}
         />
          <label htmlFor="description" className="py-2">Descripción:</label>
         <textarea
@@ -33,7 +34,7 @@ const CreateGroupModal = ({ isOpen, onRequestClose, onSave, title, setTitle, des
           placeholder={placeholderDescription}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          maxLength={500}
+          maxLength={200}
         />
         <div className="flex justify-end text-sm">
           <button

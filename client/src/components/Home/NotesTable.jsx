@@ -21,7 +21,12 @@ const NotesTable = () => {
     try {
       const result = await getAllWorkspace(userId);
       if (Array.isArray(result)) {
-        setNotes(result);
+        const formattedNotes = result.map((note) => ({
+          ...note,
+          created_at: new Date(note.created_at).toLocaleString(),
+          updated_at: new Date(note.updated_at).toLocaleString(),
+        }));
+        setNotes(formattedNotes);
       } else {
         console.error("Error: No obtuvimos datos");
       }
@@ -29,6 +34,7 @@ const NotesTable = () => {
       console.error("Error al obtener las notas:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchNotes();

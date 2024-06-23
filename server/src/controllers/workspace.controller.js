@@ -33,8 +33,8 @@ module.exports.addWorkspace = async (req, res) => {
         if (err) {
           return res.status(500).send(err);
         }
-        
-        res.json("status: Creado correctamente")
+
+        res.json("status: Creado correctamente");
       }
     );
   } catch (error) {
@@ -55,7 +55,9 @@ module.exports.deleteWorkspace = async (req, res) => {
 
       // Verificar si se eliminó algún grupo de trabajo
       if (result.affectedRows === 0) {
-        return res.status(404).send("No se encontró el grupo de trabajo con el ID dado");
+        return res
+          .status(404)
+          .send("No se encontró el grupo de trabajo con el ID dado");
       }
 
       res.json("Grupo de trabajo eliminado correctamente");
@@ -69,24 +71,28 @@ module.exports.deleteWorkspace = async (req, res) => {
 module.exports.updateWorkspace = async (req, res) => {
   const { title, description } = req.body;
   const { id } = req.params;
-  const query = "UPDATE group_notes SET title = ?, description = ? WHERE group_id = ?";
+  const query =
+    "UPDATE group_notes SET title = ?, description = ?, updated_at = CURRENT_TIMESTAMP WHERE group_id = ?";
 
   try {
     connection.query(query, [title, description, id], async (err, result) => {
       // Validar errores
       if (err) {
-        return res.status(500).send(err);
+        console.error("Error al ejecutar la consulta:", err);
+        return res.status(500).send("Error al ejecutar la consulta");
       }
 
       // Verificar si se actualizó algún grupo de trabajo
       if (result.affectedRows === 0) {
+        console.log("No se encontró el grupo de trabajo con el ID dado");
         return res.status(404).send("No se encontró el grupo de trabajo con el ID dado");
       }
 
+      console.log("Grupo de trabajo actualizado correctamente");
       res.json("Grupo de trabajo actualizado correctamente");
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error al actualizar grupo de trabajo:", error);
     res.status(500).send("Error al actualizar grupo de trabajo");
   }
 };
