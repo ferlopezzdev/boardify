@@ -10,15 +10,19 @@ const userController = {
       const user: User = req.body;
 
       // Verificar si el usuario ya existe
-      const existingUser = await userModel.getUserByCredentials(user.username, user.email);
+      const existingUser = await userModel.getUserByCredentials(
+        user.username,
+        user.email
+      );
       if (existingUser) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           error: {
             status: "ERROR",
             code: "USER_ALREADY_EXISTS",
             message: "El usuario ya existe.",
-            details: "El nombre de usuario o el correo electrónico ya está en uso."
-          } 
+            details:
+              "El nombre de usuario o el correo electrónico ya está en uso.",
+          },
         });
       }
 
@@ -29,14 +33,21 @@ const userController = {
       // Crear usuario
       const newUser = await userModel.createUser(user);
       console.log(newUser);
-      
-      res.status(201).json({ 
+
+      res.status(201).json({
         status: "OK",
         message: "Usuario creado exitosamente.",
-        data: user 
+        data: user,
       });
     } catch (error) {
-      res.status(500).json({ error: "Error al crear usuario." });
+      res.status(500).json({
+        error: {
+          status: "ERROR",
+          code: "FATAL_ERROR",
+          message: "Error interno del servidor.",
+          details: "No se pudo crear el usuario.",
+        },
+      });
     }
   },
 
@@ -48,10 +59,24 @@ const userController = {
       if (user) {
         res.status(200).json(user);
       } else {
-        res.status(404).json({ message: "Usuario no encontrado." });
+        res.status(404).json({ 
+          error: {
+            status: "ERROR",
+            code: "USER_NOT_FOUND",
+            message: "Usuario no encontrado.",
+            details: "El usuario no existe.",
+          },
+         });
       }
     } catch (error) {
-      res.status(500).json({ error: "Error al obtener usuario" });
+      res.status(500).json({ 
+        error: {
+          status: "ERROR",
+          code: "FATAL_ERROR",
+          message: "Error interno del servidor.",
+          details: "No se pudo obtener el usuario.",
+        },
+       });
     }
   },
 
@@ -63,10 +88,24 @@ const userController = {
       if (user) {
         res.status(200).json(user);
       } else {
-        res.status(404).json({ message: "Usuario no encontrado" });
+        res.status(404).json({
+          error: {
+            status: "ERROR",
+            code: "USER_NOT_FOUND",
+            message: "Usuario no encontrado.",
+            details: "El usuario no existe.",
+          },
+         });
       }
     } catch (error) {
-      res.status(500).json({ error: "Error al obtener usuario" });
+      res.status(500).json({ 
+        error: {
+          status: "ERROR",
+          code: "FATAL_ERROR",
+          message: "Error interno del servidor.",
+          details: "No se pudo obtener el usuario.",
+        },
+       });
     }
   },
 
@@ -78,7 +117,14 @@ const userController = {
       await userModel.updateUser(id, user);
       res.status(200).json({ message: "Usuario actualizado correctamente" });
     } catch (error) {
-      res.status(500).json({ error: "Error al actualizar usuario" });
+      res.status(500).json({ 
+        error: {
+          status: "ERROR",
+          code: "FATAL_ERROR",
+          message: "Error interno del servidor.",
+          details: "No se pudo actualizar el usuario.",
+        },
+       });
     }
   },
 
@@ -89,9 +135,16 @@ const userController = {
       await userModel.deleteUser(id);
       res.status(200).json({ message: "Usuario eliminado correctamente" });
     } catch (error) {
-      res.status(500).json({ error: "Error al eliminar el usuario" });
+      res.status(500).json({
+        error: {
+          status: "ERROR",
+          code: "FATAL_ERROR",
+          message: "Error interno del servidor.",
+          details: "No se pudo eliminar el usuario.",
+        },
+       });
     }
-  }
+  },
 };
 
 export default userController;
