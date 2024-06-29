@@ -41,7 +41,7 @@ const authController = {
       const token = jwt.sign(
         { id: user.user_id, username: user.username },
         process.env.TOKEN as string,
-        { expiresIn: "1h" }
+        { expiresIn: "24h" }
       );
 
       res
@@ -106,7 +106,7 @@ const authController = {
       const token = jwt.sign(
         { id: user.user_id, username: user.username },
         process.env.TOKEN as string,
-        { expiresIn: "1h" }
+        { expiresIn: "24h" }
       );
 
       res
