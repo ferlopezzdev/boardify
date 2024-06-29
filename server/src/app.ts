@@ -28,7 +28,7 @@ app.use(cors({
 }));
 
 // Establecer endpoints
-app.use('/api/users', userEndpoints); // API de usuario
+app.use('/api/users', authMiddleware ,userEndpoints); // API de usuario
 app.use('/api/auth', authEndpoints); // API de autenticación
 
 app.listen(PORT, () => {

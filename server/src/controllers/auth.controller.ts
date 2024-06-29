@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import validator from "validator";
 import userModel from "../models/user.model";
 import { User } from "../types/User";
 import dotenv from "dotenv";
@@ -12,6 +13,56 @@ const authController = {
     try {
       const user: User = req.body;
 
+      // Sanitizar puntos de entrada
+      user.status = "conectado";
+      user.username = validator.trim(user.username).toLocaleLowerCase();
+      user.email = validator.trim(user.email).toLocaleLowerCase();
+
+      // Validar puntos de entrada
+      // Si el formato del correo es válido
+      if (!validator.isEmail(user.email)) {
+        return res.status(400).json({
+          error: {
+            status: "Error",
+            message: "Formato de correo no válido.",
+            details: "No es un correo válido.",
+          },
+        });
+      }
+
+      // Si el nombre de usuario es lo suficientemente largo
+      if (!validator.isLength(user.username, { min: 4, max: 30 })) {
+        return res.status(400).json({
+          error: {
+            status: "Error",
+            message: "Nombre de usuario muy corto",
+            details: "El nombre de usuario debe tener al menos 4 caracteres",
+          },
+        });
+      }
+
+      // Si el nombre de usuario es alphanúmerico
+      if (!validator.isAlphanumeric(user.username)) {
+        return res.status(400).json({
+          error: {
+            status: "Error",
+            message: "Nombre de usuario inválido.",
+            details: "El nombre de usuario no puede ser alfanúmerico.",
+          },
+        });
+      }
+
+      // Válidar longitud de la contraseña
+      if (!validator.isLength(user.password, { min: 8 })) {
+        return res.status(400).json({
+          error: {
+            status: "Error",
+            message: "Contraseña no válida.",
+            details: "La contraseña debe contener al menos 8 caracteres.",
+          },
+        });
+      }
+
       // Verificar si el usuario ya existe
       const existingUser = await userModel.getUserByCredentials(
         user.username,
@@ -20,8 +71,7 @@ const authController = {
       if (existingUser) {
         return res.status(400).json({
           error: {
-            status: "ERROR",
-            code: "USER_ALREADY_EXISTS",
+            status: "Error",
             message: "El usuario ya existe.",
             details:
               "El nombre de usuario o el correo electrónico ya está en uso.",
@@ -44,6 +94,7 @@ const authController = {
         { expiresIn: "24h" }
       );
 
+      // Enviar respuesta
       res
         .status(200)
         .cookie("access_token", token, {
@@ -51,7 +102,7 @@ const authController = {
           maxAge: 1000 * 60 * 60, // cookie por una hora
         })
         .json({
-          status: "SUCCESS",
+          status: "Success",
           data: {
             token: token,
             user: {
@@ -64,8 +115,7 @@ const authController = {
     } catch (error) {
       res.status(500).json({
         error: {
-          status: "ERROR",
-          code: "FATAL_ERROR",
+          status: "Error",
           message: "Error interno del servidor.",
           details: "No se pudo crear el usuario.",
         },
@@ -83,8 +133,7 @@ const authController = {
       if (!user) {
         return res.status(400).json({
           error: {
-            status: "ERROR",
-            code: "USER_NOT_FOUND",
+            status: "Error",
             message: "El usuario no existe.",
           },
         });
@@ -95,8 +144,7 @@ const authController = {
       if (!isMatch) {
         return res.status(400).json({
           error: {
-            status: "ERROR",
-            code: "INVALID_CREDENTIALS",
+            status: "Error",
             message: "Credenciales inválidas.",
           },
         });
@@ -116,7 +164,7 @@ const authController = {
           maxAge: 1000 * 60 * 60, // cookie por una hora
         })
         .json({
-          status: "SUCCESS",
+          status: "Success",
           data: {
             token: token,
             user: {
@@ -129,8 +177,7 @@ const authController = {
     } catch (error) {
       res.status(500).json({
         error: {
-          status: "ERROR",
-          code: "INTERNAL_SERVER_ERROR",
+          status: "Error",
           message: "Ocurrió un error al iniciar sesión.",
           details: error,
         },
