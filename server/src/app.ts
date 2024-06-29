@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Autorizar peticiones solo desde la URL indicada
 app.use(cors({
-    origin: [CORS_ORIGIN],
+    origin: [CORS_ORIGIN || 'http://localhost:5173'],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }));
 

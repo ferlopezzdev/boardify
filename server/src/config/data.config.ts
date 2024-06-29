@@ -3,7 +3,7 @@ dotenv.config();
 
 export const {
     PORT,
-    CORS_ORIGIN = 'http://localhost:5173',
+    CORS_ORIGIN,
     DB_USER,
     DB_HOST,
     DB_PASSWORD,

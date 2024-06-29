@@ -12,7 +12,14 @@ const userController = {
       // Verificar si el usuario ya existe
       const existingUser = await userModel.getUserByCredentials(user.username, user.email);
       if (existingUser) {
-        return res.status(400).json({ error: "El usuario ya existe." });
+        return res.status(400).json({ 
+          error: {
+            status: "ERROR",
+            code: "USER_ALREADY_EXISTS",
+            message: "El usuario ya existe.",
+            details: "El nombre de usuario o el correo electrónico ya está en uso."
+          } 
+        });
       }
 
       // Hashear contraseña
@@ -20,8 +27,14 @@ const userController = {
       user.password = hashedPassword;
 
       // Crear usuario
-      await userModel.createUser(user);
-      res.status(201).json({ message: "Usuario creado exitosamente." });
+      const newUser = await userModel.createUser(user);
+      console.log(newUser);
+      
+      res.status(201).json({ 
+        status: "OK",
+        message: "Usuario creado exitosamente.",
+        data: user 
+      });
     } catch (error) {
       res.status(500).json({ error: "Error al crear usuario." });
     }
