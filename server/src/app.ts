@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Establecer un punto de origen en el servidor (API)
 app.use(cors({
-  origin: CORS_ORIGIN,
+  origin: ['http://localhost:5173'],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }));
 

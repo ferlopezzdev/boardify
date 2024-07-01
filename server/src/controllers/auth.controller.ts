@@ -21,7 +21,7 @@ const authController = {
       // Validar puntos de entrada
       // Si el formato del correo es válido
       if (!validator.isEmail(user.email)) {
-        return res.status(400).json({
+        return res.json({
           error: {
             status: "Error",
             message: "Formato de correo no válido.",
@@ -32,7 +32,7 @@ const authController = {
 
       // Si el nombre de usuario es lo suficientemente largo
       if (!validator.isLength(user.username, { min: 4, max: 30 })) {
-        return res.status(400).json({
+        return res.json({
           error: {
             status: "Error",
             message: "Nombre de usuario muy corto",
@@ -43,7 +43,7 @@ const authController = {
 
       // Si el nombre de usuario es alphanúmerico
       if (!validator.isAlphanumeric(user.username)) {
-        return res.status(400).json({
+        return res.json({
           error: {
             status: "Error",
             message: "Nombre de usuario inválido.",
@@ -54,7 +54,7 @@ const authController = {
 
       // Válidar longitud de la contraseña
       if (!validator.isLength(user.password, { min: 8 })) {
-        return res.status(400).json({
+        return res.json({
           error: {
             status: "Error",
             message: "Contraseña no válida.",
@@ -72,9 +72,9 @@ const authController = {
         return res.status(400).json({
           error: {
             status: "Error",
-            message: "El usuario ya existe.",
+            message: "El nombre de usuario o correo ya existe.",
             details:
-              "El nombre de usuario o el correo electrónico ya está en uso.",
+              "El usuario ya existe.",
           },
         });
       }
@@ -86,6 +86,7 @@ const authController = {
       // Crear usuario
       const newUser = await userModel.createUser(user);
       console.log(newUser);
+      
 
       // Crear y devolver el token JWT
       const token = jwt.sign(
@@ -113,7 +114,7 @@ const authController = {
           },
         });
     } catch (error) {
-      res.status(500).json({
+      res.json({
         error: {
           status: "Error",
           message: "Error interno del servidor.",
@@ -131,7 +132,7 @@ const authController = {
       // Verificar si el usuario existe
       const user = await userModel.getUserByUsername(username);
       if (!user) {
-        return res.status(400).json({
+        return res.json({
           error: {
             status: "Error",
             message: "El usuario no existe.",
@@ -142,7 +143,7 @@ const authController = {
       // Verificar la contraseña
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).json({
+        return res.json({
           error: {
             status: "Error",
             message: "Credenciales inválidas.",
