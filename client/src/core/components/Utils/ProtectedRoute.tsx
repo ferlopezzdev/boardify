@@ -15,7 +15,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   // Acceder al contexto del usuario autenticado
   const { token } = useAuth();
 
-  // Validar el token utilizando isValidToken, asegurándose de manejar el caso de token null
+  // Validar si el token es válido
   canActivate = token ? isValidToken(token) : false;
 
   if (!canActivate) {
