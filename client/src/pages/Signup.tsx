@@ -1,11 +1,18 @@
 import React, { useState, ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaAccusoft } from "react-icons/fa6";
 import InputField from "../core/components/AuthForm/InputForm";
 import { User } from "../core/types/User";
-import authService from "../core/services/authService";
+import { useAuth } from "../core/context/AuthContext";
 
 const Signup: React.FC = () => {
+
+  // Acceder al contexto de autorización
+  const { signup } = useAuth();
+
+  // Hook de redirección
+  const navigate = useNavigate();
+
   // Establecer estado de los datos del usuario
   const [user, setUser] = useState<User>({
     name: "",
@@ -60,25 +67,23 @@ const Signup: React.FC = () => {
     }
 
     try {
+      
       // Realizar petición al servicio
-      const response = await authService.signup(user);
+      await signup(user);
 
-      // Validar que la petición sea exitoso
-      if (response.status === "Success") {
-        setError("");
-        setUser({
-          name: "",
-          lastname: "",
-          username: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-      } else {
-        // Establecer errores
-        const errorDetails = response.error?.details;
-        setError(errorDetails);
-      }
+      setUser({
+        name: "",
+        lastname: "",
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      })
+
+      setError(null);
+
+      navigate('/home');
+      
     } catch (error: any) {
       setError(error.message);
     }

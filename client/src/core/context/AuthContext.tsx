@@ -9,7 +9,7 @@ interface NewUser extends User {
 // Define las propiedades del contexto de autenticación
 interface AuthContextProps {
   token: string | null; // Token de autenticación actual
-  login: (credentials: UserCredentials) => Promise<void>; // Función para iniciar sesión
+  signin: (credentials: UserCredentials) => Promise<void>; // Función para iniciar sesión
   signup: (user: NewUser) => Promise<void>; // Función para registrarse
   logout: () => void; // Función para cerrar sesión
 }
@@ -27,7 +27,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   );
 
   // Función para iniciar sesión
-  const login = async (credentials: UserCredentials) => {
+  const signin = async (credentials: UserCredentials) => {
     try {
       const response = await authService.signin(credentials);
 
@@ -68,7 +68,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, signup, logout }}>
+    <AuthContext.Provider value={{ token, signin, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

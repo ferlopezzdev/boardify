@@ -1,7 +1,8 @@
+import Header from "../core/components/Templates/Header";
 
 function Home() {
     return(
-        <h1>Ruta protegida: HOME</h1>
+        <Header />
     );
 }
 

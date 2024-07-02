@@ -8,7 +8,7 @@ import { useAuth } from "../core/context/AuthContext";
 const Login: React.FC = () => {
 
   // Acceder al contexto de autorización
-  const { login } = useAuth();
+  const { signin } = useAuth();
 
   // Establecer hook para redireccionar
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const handleSubmit = async () => {
 
   try {
     // Realizar petición al servicio
-    await login(user);
+    await signin(user);
 
      // Limpiar campos después de iniciar sesión exitosamente
      setUser({
