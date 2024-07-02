@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { PORT, CORS_ORIGIN } from './config/data.config';
+import { PORT } from './config/data.config';
 
 // Importación de middlewares
 import authMiddleware from './middlewares/authMiddleware';
@@ -25,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: ['http://localhost:5173'],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
 }));
 
 // Establecer endpoints

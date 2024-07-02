@@ -6,6 +6,7 @@ import { User } from "../core/types/User";
 import authService from "../core/services/authService";
 
 const Signup: React.FC = () => {
+  // Establecer estado de los datos del usuario
   const [user, setUser] = useState<User>({
     name: "",
     lastname: "",
@@ -15,8 +16,10 @@ const Signup: React.FC = () => {
     confirmPassword: "",
   });
 
+  // Establecer estado del error
   const [error, setError] = useState<string | null>(null);
 
+  // Función para manejar cambios de estados de los inputs
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -25,19 +28,20 @@ const Signup: React.FC = () => {
       [name]: value,
     }));
 
+    // Validar que las contraseñas coincidan
     if (name === "confirmPassword") {
       if (value === "") {
-        setError(null); // Reset error if confirmPassword is empty
+        setError(null); // Reiniciar error si el campo está vacío
       } else if (user.password !== value) {
         setError("Las contraseñas no coinciden.");
       } else {
-        setError(null); // Reset error if passwords match
+        setError(null); // Reiniciar error si las contraseñas coinciden
       }
     }
   };
 
   const handleSubmit = async () => {
-    // Validate form before making the request
+    // Validar antes de realizar la petición
     if (
       !user.name ||
       !user.lastname ||
@@ -56,8 +60,10 @@ const Signup: React.FC = () => {
     }
 
     try {
+      // Realizar petición al servicio
       const response = await authService.signup(user);
 
+      // Validar que la petición sea exitoso
       if (response.status === "Success") {
         setError("");
         setUser({
@@ -69,6 +75,7 @@ const Signup: React.FC = () => {
           confirmPassword: "",
         });
       } else {
+        // Establecer errores
         const errorDetails = response.error?.details;
         setError(errorDetails);
       }

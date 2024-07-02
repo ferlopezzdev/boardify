@@ -104,7 +104,7 @@ const authController = {
         })
         .json({
           status: "Success",
-          data: {
+          body: {
             token: token,
             user: {
               id: user.user_id,
@@ -166,7 +166,7 @@ const authController = {
         })
         .json({
           status: "Success",
-          data: {
+          body: {
             token: token,
             user: {
               id: user.user_id,

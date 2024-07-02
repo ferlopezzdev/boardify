@@ -1,22 +1,24 @@
 import React, { useState, ChangeEvent } from "react";
 import { FaAccusoft } from "react-icons/fa6";
 import InputField from "../core/components/AuthForm/InputForm";
-import authService from "../core/services/authService";
 import { Link } from "react-router-dom";
-
-interface UserCredentials {
-  username: string;
-  password: string;
-}
+import { UserCredentials } from "../core/types/User";
+import { useAuth } from "../core/context/AuthContext";
 
 const Login: React.FC = () => {
+
+  const { login } = useAuth();
+
+  // Establecer estado de las credenciales
   const [user, setUser] = useState<UserCredentials>({
     username: "",
     password: "",
   });
 
+  // Estado de los errores
   const [error, setError] = useState<string | null>(null);
 
+  // Función para validar los cambios de estado
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -26,30 +28,30 @@ const Login: React.FC = () => {
     }));
   };
 
-  const handleSubmit = async () => {
-    // Validate form before making the request
-    if (!user.username || !user.password) {
-      setError("Todos los campos son obligatorios.");
-      return;
-    }
+// Función para enviar datos del formulario
+const handleSubmit = async () => {
+  // Validar campos antes de enviar los datos
+  if (!user.username || !user.password) {
+    setError("Todos los campos son obligatorios.");
+    return;
+  }
 
-    try {
-      const response = await authService.signin(user);
+  try {
+    // Realizar petición al servicio
+    await login(user);
 
-      if (response.status === "Success") {
-        setError("");
-        setUser({
-          username: "",
-          password: "",
-        });
-      } else {
-        const errorDetails = response.error?.message;
-        setError(errorDetails);
-      }
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+     // Limpiar campos después de iniciar sesión exitosamente
+     setUser({
+      username: "",
+      password: "",
+    });
+
+    setError(null);
+
+  } catch (error: any) {
+    setError(error.message);
+  }
+};
 
   return (
     <div className="relative min-h-screen font-poppins bg-gray-100 overflow-hidden">

@@ -36,7 +36,7 @@ const InputField: React.FC<InputFieldProps> = ({
         onChange={handleChange}
         placeholder={placeholder}
         className={`mt-1 block w-full px-3 py-2 border-2 ${
-          className || "" // Agrega className condicional si se proporciona
+          className || "" // Agregar className condicional si se proporciona
         } rounded-md shadow-sm focus:outline-none focus:border-primary sm:text-sm transition-colors`}
       />
     </div>

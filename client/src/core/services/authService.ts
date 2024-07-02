@@ -1,58 +1,60 @@
-import { User } from "../types/User";
-
-interface UserCredentials {
-  username: string;
-  password: string;
-}
+import axios from 'axios';
+import { User, UserCredentials } from "../types/User";
 
 interface NewUser extends User {
   confirmPassword: string;
 }
 
+// URL base de las peticiones
 const apiUrl = "http://localhost:3000";
 
 const authService = {
+  // Servicio para registrar usuario
   signup: async (user: NewUser): Promise<any> => {
     try {
-      const response = await fetch(`${apiUrl}/api/auth/signup`, {
-        method: "POST",
+      const response = await axios.post(`${apiUrl}/api/auth/signup`, user, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(user),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage = errorData.error?.message || "Error desconocido";
-        throw new Error(errorMessage);
+      // Obtener el token de la respuesta y guardarlo en el localStorage
+      const { token } = response.data.body;
+
+      if (token) {
+        localStorage.setItem('auth_access', token);
       }
 
-      return await response.json();
+      return response.data;
+
     } catch (error: any) {
-      throw new Error(error.message);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.error?.message || "Error desconocido";
+        throw new Error(errorMessage);
+      } else {
+        throw new Error(error.message);
+      }
     }
   },
 
+  // Servicio para iniciar sesión
   signin: async (credentials: UserCredentials): Promise<any> => {
     try {
-      const response = await fetch(`${apiUrl}/api/auth/signin`, {
-        method: "POST",
+      const response = await axios.post(`${apiUrl}/api/auth/signin`, credentials, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials),
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage = errorData.error?.message || "Error desconocido";
-        throw new Error(errorMessage);
-      }
-
-      return await response.json();
+      
+      return response.data;
+      
     } catch (error: any) {
-      throw new Error(error.message);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.error?.message || "Error desconocido";
+        throw new Error(errorMessage);
+      } else {
+        throw new Error(error.message);
+      }
     }
   },
 };
