@@ -1,13 +1,17 @@
 import React, { useState, ChangeEvent } from "react";
 import { FaAccusoft } from "react-icons/fa6";
 import InputField from "../core/components/AuthForm/InputForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserCredentials } from "../core/types/User";
 import { useAuth } from "../core/context/AuthContext";
 
 const Login: React.FC = () => {
 
+  // Acceder al contexto de autorización
   const { login } = useAuth();
+
+  // Establecer hook para redireccionar
+  const navigate = useNavigate();
 
   // Establecer estado de las credenciales
   const [user, setUser] = useState<UserCredentials>({
@@ -47,6 +51,8 @@ const handleSubmit = async () => {
     });
 
     setError(null);
+
+    navigate('/home')
 
   } catch (error: any) {
     setError(error.message);
